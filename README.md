@@ -24,22 +24,6 @@ You may close a file descriptor.
 try descriptor.close()
 ```
 
-##### Read
-
-You may read from a file descriptor.
-
-```swift
-let bytes = try descriptor.read(1024)
-```
-
-##### Write
-
-You may write to a file descriptor.
-
-```swift
-try descriptor.write([1])
-```
-
 ##### Select
 
 You may use the select function to examine which file descriptors are ready for
@@ -47,6 +31,22 @@ reading, writing or have error conditions.
 
 ```swift
 let readable = try select(reads: [descriptor]).reads
+```
+
+### ReadableFileDescriptor
+
+You may read from a readable file descriptor.
+
+```swift
+let bytes = try descriptor.read(1024)
+```
+
+##### WritableFileDescriptor
+
+You may write to a writable file descriptor.
+
+```swift
+try descriptor.write([1])
 ```
 
 #### Pipe

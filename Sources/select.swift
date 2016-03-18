@@ -14,7 +14,7 @@ func filter<T : FileDescriptor>(sockets: [T]?, inout _ set: fd_set) -> [T] {
 }
 
 
-public func select<T : FileDescriptor>(reads reads: [T] = [], writes: [T] = [], errors: [T] = [], timeout: timeval? = nil) throws -> (reads: [T], writes: [T], errors: [T]) {
+public func select<R : FileDescriptor, W : WritableFileDescriptor, E : FileDescriptor>(reads reads: [R] = [], writes: [W] = [], errors: [E] = [], timeout: timeval? = nil) throws -> (reads: [R], writes: [W], errors: [E]) {
   var readFDs = fd_set()
   fdZero(&readFDs)
   reads.forEach { fdSet($0.fileNumber, &readFDs) }
@@ -27,7 +27,10 @@ public func select<T : FileDescriptor>(reads reads: [T] = [], writes: [T] = [], 
   fdZero(&errorFDs)
   errors.forEach { fdSet($0.fileNumber, &errorFDs) }
 
-  let maxFD = (reads + writes + errors).map { $0.fileNumber }.reduce(0, combine: max)
+  let readFDNumbers = reads.map { $0.fileNumber }
+  let writeFDNumbers = writes.map { $0.fileNumber }
+  let errorFDNumbers = errors.map { $0.fileNumber }
+  let maxFD = (readFDNumbers + writeFDNumbers + errorFDNumbers).reduce(0, combine: max)
   let result: Int32
   if let timeout = timeout {
     var timeout = timeout

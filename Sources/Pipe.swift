@@ -7,7 +7,7 @@ private let system_pipe = Darwin.pipe
 #endif
 
 
-class PipeConnection : Connection {
+class PipeReadFileDescriptor : ReadableFileDescriptor {
   let fileNumber: FileNumber
 
   init(fileNumber: FileNumber) {
@@ -20,10 +20,23 @@ class PipeConnection : Connection {
 }
 
 
-public func pipe() throws -> (reader: Connection, writer: Connection) {
+class PipeWriteFileDescriptor : WritableFileDescriptor {
+  let fileNumber: FileNumber
+
+  init(fileNumber: FileNumber) {
+    self.fileNumber = fileNumber
+  }
+
+  deinit {
+    let _ = try? close()
+  }
+}
+
+
+public func pipe() throws -> (reader: ReadableFileDescriptor, writer: WritableFileDescriptor) {
   var fileNumbers: [FileNumber] = [0, 0]
   if system_pipe(&fileNumbers) == -1 {
     throw FileDescriptorError()
   }
-  return (PipeConnection(fileNumber: fileNumbers[0]), PipeConnection(fileNumber: fileNumbers[1]))
+  return (PipeReadFileDescriptor(fileNumber: fileNumbers[0]), PipeWriteFileDescriptor(fileNumber: fileNumbers[1]))
 }

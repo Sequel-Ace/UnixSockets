@@ -10,7 +10,7 @@ import Spectre
 import fd
 
 
-struct TestFileDescriptor : FileDescriptor {
+struct TestFileDescriptor : FileDescriptor, WritableFileDescriptor, ReadableFileDescriptor {
   let fileNumber: FileNumber
 
   init(fileNumber: FileNumber) {
@@ -38,7 +38,9 @@ func testFileDescriptor() {
       let descriptor = TestFileDescriptor(fileNumber: -1)
       try expect { try descriptor.close() }.toThrow()
     }
+  }
 
+  describe("ReadableFileDescriptor/WritableFileDescriptor") {
     $0.it("may be written to, and read from") {
       let (read, write) = try pipe()
       try expect(try write.write([1, 2, 3])) == 3

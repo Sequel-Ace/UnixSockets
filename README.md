@@ -16,7 +16,7 @@ protocol FileDescriptor {
 
 There are various protocol extensions to FileDescriptor to add functionality.
 
-##### Close
+#### Close
 
 You may close a file descriptor.
 
@@ -24,7 +24,7 @@ You may close a file descriptor.
 try descriptor.close()
 ```
 
-##### Select
+#### Select
 
 You may use the select function to examine which file descriptors are ready for
 reading, writing or have error conditions.
@@ -41,7 +41,7 @@ You may read from a readable file descriptor.
 let bytes = try descriptor.read(1024)
 ```
 
-##### WritableFileDescriptor
+### WritableFileDescriptor
 
 You may write to a writable file descriptor.
 
@@ -49,7 +49,7 @@ You may write to a writable file descriptor.
 try descriptor.write([1])
 ```
 
-#### Pipe
+### Pipe
 
 You may use the pipe function to create a unidirectional data flow. The reader
 allows you to read data which was previously written to the writer.

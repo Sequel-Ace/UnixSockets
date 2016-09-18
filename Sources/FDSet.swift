@@ -5,7 +5,7 @@ import Darwin
 #endif
 
 
-func fdZero(inout set: fd_set) {
+func fdZero(_ set: inout fd_set) {
 #if os(Linux)
   set.__fds_bits = (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 #else
@@ -14,7 +14,7 @@ func fdZero(inout set: fd_set) {
 }
 
 
-func fdSet(descriptor: FileNumber, inout _ set: fd_set) {
+func fdSet(_ descriptor: FileNumber, _ set: inout fd_set) {
 #if os(Linux)
   let intOffset = Int(descriptor / 16)
   let bitOffset = Int(descriptor % 16)
@@ -66,7 +66,7 @@ func fdSet(descriptor: FileNumber, inout _ set: fd_set) {
 }
 
 
-func fdIsSet(descriptor: FileNumber, inout _ set: fd_set) -> Bool {
+func fdIsSet(_ descriptor: FileNumber, _ set: inout fd_set) -> Bool {
 #if os(Linux)
   let intOffset = Int(descriptor / 32)
   let bitOffset = Int(descriptor % 32)

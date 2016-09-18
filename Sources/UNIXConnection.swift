@@ -1,5 +1,5 @@
-public class UNIXConnection : FileDescriptor, Connection {
-  public let fileNumber: FileNumber
+open class UNIXConnection : FileDescriptor, Connection {
+  open let fileNumber: FileNumber
 
   init(fileNumber: FileNumber) {
     self.fileNumber = fileNumber

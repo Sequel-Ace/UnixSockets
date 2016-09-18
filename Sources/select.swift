@@ -7,14 +7,14 @@ private let system_select = Darwin.select
 #endif
 
 
-func filter<T : FileDescriptor>(sockets: [T]?, inout _ set: fd_set) -> [T] {
+func filter<T : FileDescriptor>(_ sockets: [T]?, _ set: inout fd_set) -> [T] {
   return sockets?.filter {
     fdIsSet($0.fileNumber, &set)
   } ?? []
 }
 
 
-public func select<R : FileDescriptor, W : WritableFileDescriptor, E : FileDescriptor>(reads reads: [R] = [], writes: [W] = [], errors: [E] = [], timeout: timeval? = nil) throws -> (reads: [R], writes: [W], errors: [E]) {
+public func select<R : FileDescriptor, W : WritableFileDescriptor, E : FileDescriptor>(reads: [R] = [], writes: [W] = [], errors: [E] = [], timeout: timeval? = nil) throws -> (reads: [R], writes: [W], errors: [E]) {
   var readFDs = fd_set()
   fdZero(&readFDs)
   reads.forEach { fdSet($0.fileNumber, &readFDs) }
@@ -30,7 +30,7 @@ public func select<R : FileDescriptor, W : WritableFileDescriptor, E : FileDescr
   let readFDNumbers = reads.map { $0.fileNumber }
   let writeFDNumbers = writes.map { $0.fileNumber }
   let errorFDNumbers = errors.map { $0.fileNumber }
-  let maxFD = (readFDNumbers + writeFDNumbers + errorFDNumbers).reduce(0, combine: max)
+  let maxFD = (readFDNumbers + writeFDNumbers + errorFDNumbers).reduce(0, max)
   let result: Int32
   if let timeout = timeout {
     var timeout = timeout

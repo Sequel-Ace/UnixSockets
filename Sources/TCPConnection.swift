@@ -1,5 +1,5 @@
-public class TCPConnection : FileDescriptor, Connection {
-  public let fileNumber: FileNumber
+open class TCPConnection : FileDescriptor, Connection {
+  open let fileNumber: FileNumber
 
   public init(fileNumber: FileNumber) {
     self.fileNumber = fileNumber

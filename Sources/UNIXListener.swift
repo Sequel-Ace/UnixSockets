@@ -13,8 +13,8 @@ private let system_bind = Darwin.bind
 #endif
 
 
-public class UNIXListener : FileDescriptor {
-  public let fileNumber: FileNumber
+open class UNIXListener : FileDescriptor {
+  open let fileNumber: FileNumber
 
   public init(path: String) throws {
     fileNumber = socket(AF_UNIX, sock_stream, 0)
@@ -34,46 +34,41 @@ public class UNIXListener : FileDescriptor {
     let _ = try? close()
   }
 
-  private func bind(path: String) throws {
+  fileprivate func bind(_ path: String) throws {
     var addr = sockaddr_un()
     addr.sun_family = sa_family_t(AF_UNIX)
 
     let lengthOfPath = path.withCString { Int(strlen($0)) }
 
-    guard lengthOfPath < sizeofValue(addr.sun_path) else {
+    guard lengthOfPath < MemoryLayout.size(ofValue: addr.sun_path) else {
       throw FileDescriptorError()
     }
 
-    withUnsafeMutablePointer(&addr.sun_path.0) { ptr in
+    addr.sun_len = UInt8(MemoryLayout<sockaddr_un>.size - MemoryLayout.size(ofValue: addr.sun_path) + lengthOfPath)
+
+    _ = withUnsafeMutablePointer(to: &addr.sun_path.0) { ptr in
       path.withCString {
         strncpy(ptr, $0, lengthOfPath)
       }
     }
 
-#if os(Linux)
-    let len = socklen_t(UInt8(sizeof(sockaddr_un)))
-#else
-    addr.sun_len = UInt8(sizeof(sockaddr_un) - sizeofValue(addr.sun_path) + lengthOfPath)
-    let len = socklen_t(addr.sun_len)
-#endif
-
-    guard system_bind(fileNumber, sockaddr_cast(&addr), len) != -1 else {
-      throw FileDescriptorError()
+    try withUnsafePointer(to: &addr) {
+      try $0.withMemoryRebound(to: sockaddr.self, capacity: 1) {
+        guard system_bind(fileNumber, $0, UInt32(MemoryLayout<sockaddr_un>.stride)) != -1 else {
+          throw FileDescriptorError()
+        }
+      }
     }
   }
 
-  private func sockaddr_cast(p: UnsafeMutablePointer<Void>) -> UnsafeMutablePointer<sockaddr> {
-    return UnsafeMutablePointer<sockaddr>(p)
-  }
-
-  private func listen(backlog backlog: Int32) throws {
+  fileprivate func listen(backlog: Int32) throws {
     if system_listen(fileNumber, backlog) == -1 {
       throw FileDescriptorError()
     }
   }
 
   /// Accepts a connection socket
-  public func accept() throws -> UNIXConnection {
+  open func accept() throws -> UNIXConnection {
     let fileNumber = system_accept(self.fileNumber, nil, nil)
     if fileNumber == -1 {
       throw FileDescriptorError()

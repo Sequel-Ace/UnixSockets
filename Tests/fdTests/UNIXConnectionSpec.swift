@@ -2,7 +2,7 @@ import Spectre
 import fd
 
 
-func testUNIXConnection() {
+public func testUNIXConnection() {
   describe("UNIXConnection") { _ in
   }
 }

@@ -16,7 +16,7 @@ public protocol FileDescriptor {
 }
 
 
-struct FileDescriptorError : ErrorType {
+struct FileDescriptorError : Error {
 
 }
 

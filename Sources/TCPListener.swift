@@ -13,8 +13,8 @@ private let sock_stream = SOCK_STREAM
 #endif
 
 
-public class TCPListener : FileDescriptor {
-  public let fileNumber: FileNumber
+open class TCPListener : FileDescriptor {
+  open let fileNumber: FileNumber
 
   init(fileNumber: FileNumber) {
     self.fileNumber = fileNumber
@@ -38,35 +38,36 @@ public class TCPListener : FileDescriptor {
     let _ = try? close()
   }
 
-  private func bind(address: String, port: UInt16) throws {
+  fileprivate func bind(_ address: String, port: UInt16) throws {
     var addr = sockaddr_in()
     addr.sin_family = sa_family_t(AF_INET)
     addr.sin_port = in_port_t(htons(in_port_t(port)))
     addr.sin_addr = in_addr(s_addr: address.withCString { inet_addr($0) })
     addr.sin_zero = (0, 0, 0, 0, 0, 0, 0, 0)
 
-   let len = socklen_t(UInt8(sizeof(sockaddr_in)))
-    guard system_bind(fileNumber, sockaddr_cast(&addr), len) != -1 else {
-      throw FileDescriptorError()
+    let len = socklen_t(UInt8(MemoryLayout<sockaddr_in>.size))
+
+    try withUnsafePointer(to: &addr) {
+      try $0.withMemoryRebound(to: sockaddr.self, capacity: 1) {
+        guard system_bind(fileNumber, $0, len) != -1 else {
+          throw FileDescriptorError()
+        }
+      }
     }
   }
 
-  private func listen(backlog backlog: Int32) throws {
+  fileprivate func listen(backlog: Int32) throws {
     if system_listen(fileNumber, backlog) == -1 {
       throw FileDescriptorError()
     }
   }
 
-  private func htons(value: CUnsignedShort) -> CUnsignedShort {
+  fileprivate func htons(_ value: CUnsignedShort) -> CUnsignedShort {
     return (value << 8) + (value >> 8)
   }
 
-  private func sockaddr_cast(p: UnsafeMutablePointer<Void>) -> UnsafeMutablePointer<sockaddr> {
-    return UnsafeMutablePointer<sockaddr>(p)
-  }
-
   /// Accepts a connection socket
-  public func accept() throws -> TCPConnection {
+  open func accept() throws -> TCPConnection {
     let fileNumber = system_accept(self.fileNumber, nil, nil)
     if fileNumber == -1 {
       throw FileDescriptorError()

@@ -13,7 +13,7 @@ public protocol WritableFileDescriptor : FileDescriptor {
 
 extension WritableFileDescriptor {
   /// Write attemps to write the given bytes to the file descriptor
-  public func write(bytes: [Byte]) throws -> Int {
+  public func write(_ bytes: [Byte]) throws -> Int {
     let size = system_write(fileNumber, bytes, bytes.count)
 
     if size == -1 {

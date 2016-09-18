@@ -2,7 +2,7 @@ import Spectre
 import fd
 
 
-func testPipe() {
+public func testPipe() {
   describe("Pipe") { _ in
 
   }

@@ -1,6 +1,7 @@
 # fd: File Descriptor
 
-Swift file descriptor library.
+Swift file descriptor library. fd is a minimal layer on-top of the underlying
+system file descriptor and socket APIs.
 
 ## Usage
 

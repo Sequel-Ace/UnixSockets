@@ -19,7 +19,7 @@ struct TestFileDescriptor : FileDescriptor, WritableFileDescriptor, ReadableFile
 }
 
 
-func testFileDescriptor() {
+public func testFileDescriptor() {
   describe("FileDescriptor") {
     $0.it("may be closed") {
       let (read, write) = try pipe()

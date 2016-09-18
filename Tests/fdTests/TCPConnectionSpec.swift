@@ -2,7 +2,7 @@ import Spectre
 import fd
 
 
-func testTCPConnection() {
+public func testTCPConnection() {
   describe("TCPConnection") {
     $0.it("may be initialised with a file number") {
       let connection = TCPConnection(fileNumber: -1)

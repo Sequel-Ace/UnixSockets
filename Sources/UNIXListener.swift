@@ -44,8 +44,6 @@ open class UNIXListener : FileDescriptor {
       throw FileDescriptorError()
     }
 
-    addr.sun_len = UInt8(MemoryLayout<sockaddr_un>.size - MemoryLayout.size(ofValue: addr.sun_path) + lengthOfPath)
-
     _ = withUnsafeMutablePointer(to: &addr.sun_path.0) { ptr in
       path.withCString {
         strncpy(ptr, $0, lengthOfPath)

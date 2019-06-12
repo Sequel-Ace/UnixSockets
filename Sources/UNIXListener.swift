@@ -13,8 +13,8 @@ private let system_bind = Darwin.bind
 #endif
 
 
-open class UNIXListener : FileDescriptor {
-  open let fileNumber: FileNumber
+public class UNIXListener : FileDescriptor {
+  public let fileNumber: FileNumber
 
   public init(path: String) throws {
     fileNumber = socket(AF_UNIX, sock_stream, 0)
@@ -66,7 +66,7 @@ open class UNIXListener : FileDescriptor {
   }
 
   /// Accepts a connection socket
-  open func accept() throws -> UNIXConnection {
+  public func accept() throws -> UNIXConnection {
     let fileNumber = system_accept(self.fileNumber, nil, nil)
     if fileNumber == -1 {
       throw FileDescriptorError()

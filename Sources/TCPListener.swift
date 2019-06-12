@@ -13,8 +13,8 @@ private let sock_stream = SOCK_STREAM
 #endif
 
 
-open class TCPListener : FileDescriptor {
-  open let fileNumber: FileNumber
+public class TCPListener : FileDescriptor {
+  public let fileNumber: FileNumber
 
   init(fileNumber: FileNumber) {
     self.fileNumber = fileNumber

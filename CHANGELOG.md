@@ -1,6 +1,6 @@
 # fd Changelog
 
-## Master
+## 0.3.0
 
 ### Breaking
 

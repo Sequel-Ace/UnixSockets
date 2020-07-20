@@ -7,18 +7,16 @@ private let system_close = Darwin.close
 #endif
 
 
-public typealias Byte = Int8
+public typealias Byte = UInt8
 public typealias FileNumber = Int32
 
 
 public protocol FileDescriptor {
-  var fileNumber: FileNumber { get }
+    var fileNumber: FileNumber { get }
 }
-
 
 struct FileDescriptorError : Error {
 }
-
 
 extension FileDescriptor {
   /// Close deletes the file descriptor from the per-process object reference table

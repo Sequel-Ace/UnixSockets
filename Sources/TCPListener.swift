@@ -14,10 +14,6 @@ private let sock_stream = SOCK_STREAM
 
 public class TCPListener : UNIXSocket, Listener {
     
-    init(fileNumber: FileNumber) {
-        self.fileNumber = fileNumber
-    }
-    
     public init(address: String, port: UInt16) throws {
         try super.init(kind: AF_INET)
         

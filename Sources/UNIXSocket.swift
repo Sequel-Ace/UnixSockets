@@ -51,6 +51,10 @@ public class UNIXSocket: FileDescriptor {
         }
     }
     
+    init(fileNumber: FileNumber) {
+        self.fileNumber = fileNumber
+    }
+    
     deinit {
       let _ = try? close()
     }

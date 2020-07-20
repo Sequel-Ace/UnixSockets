@@ -59,7 +59,7 @@ public class UNIXServerSocket: UNIXSocket, Listener {
     }
     
     /// Accepts a connection socket
-    public func accept<UNIXConnection>() throws -> UNIXConnection {
+    public func accept() throws -> UNIXConnection {
         let fileNumber = system_accept(self.fileNumber, nil, nil)
         guard fileNumber != -1 else {
             throw UNIXSocketError(kind: .acceptError, errno: errno)

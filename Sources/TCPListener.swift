@@ -54,7 +54,7 @@ public class TCPListener : UNIXSocket, Listener {
     }
     
     /// Accepts a connection socket
-    public func accept<TCPConnection>() throws -> TCPConnection {
+    public func accept() throws -> TCPConnection {
         let fileNumber = system_accept(self.fileNumber, nil, nil)
         guard fileNumber != -1 else {
             throw UNIXSocketError(kind: .acceptError, errno: errno)

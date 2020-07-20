@@ -49,7 +49,7 @@ public class UNIXClientSocket: UNIXSocket, Listener {
         }
     }
     
-    public func accept<UNIXConnection>() throws -> UNIXConnection {
+    public func accept() throws -> UNIXConnection {
         return UNIXConnection(fileNumber: fileNumber)
     }
 }

@@ -1,3 +1,3 @@
 public protocol Listener : FileDescriptor {
-  func accept() throws -> Connection
+    func accept<C: Connection>() throws -> C
 }

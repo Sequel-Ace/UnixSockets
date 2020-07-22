@@ -43,7 +43,7 @@ extension ReadableFileDescriptor {
             throw FileDescriptorError(kind: .unknown, errno: errno)
         }
         guard lseek(fileNumber, current, SEEK_SET) != -1 else {
-            throw FileDescriptorError(kind: .unkown, errno: errno)
+            throw FileDescriptorError(kind: .unknown, errno: errno)
         }
         return try read(size)
     }

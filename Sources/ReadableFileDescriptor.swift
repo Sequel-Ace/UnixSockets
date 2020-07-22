@@ -35,6 +35,6 @@ extension ReadableFileDescriptor {
     
     public func readAll() throws -> Data {
         let size = Int(lseek(fileNumber, 0, SEEK_END))
-        return read(size)
+        return try read(size)
     }
 }

@@ -17,7 +17,7 @@ public protocol FileDescriptor {
 
 struct FileDescriptorError : Error {
     enum ErrorKind: String {
-        case readError, writeError, selectError, pipeError, closeError
+        case readError, writeError, selectError, pipeError, closeError, unknown
     }
     
     let kind: ErrorKind

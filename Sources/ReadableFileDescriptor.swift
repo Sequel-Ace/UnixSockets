@@ -30,6 +30,11 @@ extension ReadableFileDescriptor {
     public func read(_ bufferSize: Int) throws -> Data {
         let bytes: [Byte] = try read(bufferSize)
         
-        return Data(bytes)
+        return Data(bytes: bytes, count: bytes.count)
+    }
+    
+    public func readAll() throws -> Data {
+        let size = Int(lseek(fileNumber, 0, SEEK_END))
+        return read(size)
     }
 }

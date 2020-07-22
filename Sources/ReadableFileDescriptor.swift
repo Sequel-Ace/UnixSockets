@@ -34,17 +34,18 @@ extension ReadableFileDescriptor {
     }
     
     public func readAll() throws -> Data {
-        let current = lseek(fileNumber, 0, SEEK_CUR)
-        guard current != -1 else {
+        var result = Data()
+        var data = CChar()
+        var data_read: size_t
+        
+        while (((data_read = recv(fileNumber, &data, 1, 0)), data_read > 0).1 && !Character(UnicodeScalar(UInt8(bitPattern: data))).isNewline) {
+            result.append(contentsOf: [data].map(UInt8.init))
+        }
+        
+        guard data_read != -1 else {
             throw FileDescriptorError(kind: .unknown, errno: errno)
         }
-        let size = Int(lseek(fileNumber, 0, SEEK_END))
-        guard size != -1 else {
-            throw FileDescriptorError(kind: .unknown, errno: errno)
-        }
-        guard lseek(fileNumber, current, SEEK_SET) != -1 else {
-            throw FileDescriptorError(kind: .unknown, errno: errno)
-        }
-        return try read(size)
+        
+        return result
     }
 }

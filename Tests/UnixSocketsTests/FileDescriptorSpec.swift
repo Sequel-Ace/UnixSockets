@@ -7,7 +7,7 @@ private let system_pipe = Darwin.pipe
 #endif
 
 import Spectre
-import fd
+import UnixSockets
 
 
 struct TestFileDescriptor : FileDescriptor, WritableFileDescriptor, ReadableFileDescriptor {
@@ -36,7 +36,7 @@ public func testFileDescriptor() {
 
     $0.it("errors while closing an invalid file descriptor") {
       let descriptor = TestFileDescriptor(fileNumber: -1)
-      try expect { try descriptor.close() }.toThrow()
+      try expect(expression: { try descriptor.close() }).toThrow()
     }
   }
 
@@ -54,12 +54,12 @@ public func testFileDescriptor() {
 
     $0.it("errors while writing from an invalid file descriptor") {
       let descriptor = TestFileDescriptor(fileNumber: -1)
-      try expect { try descriptor.write([1]) }.toThrow()
+      try expect(expression: { try descriptor.write([1]) }).toThrow()
     }
 
     $0.it("errors while reading from an invalid file descriptor") {
       let descriptor = TestFileDescriptor(fileNumber: -1)
-      try expect { try descriptor.read(1) as [Byte] }.toThrow()
+      try expect(expression: { try descriptor.read(1) as [Byte] }).toThrow()
     }
   }
 }

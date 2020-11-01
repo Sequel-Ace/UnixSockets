@@ -1,3 +1,5 @@
+import Foundation
+
 #if os(Linux)
 import Glibc
 private let system_close = Glibc.close

@@ -2,15 +2,15 @@
 import PackageDescription
 
 let package = Package(
-  name: "fd",
+  name: "UnixSockets",
   products: [
-    .library(name: "fd", targets: ["fd"])
+    .library(name: "UnixSockets", targets: ["UnixSockets"])
   ],
   dependencies: [
     .package(url: "https://github.com/kylef/Spectre.git", from: "0.9.0")
   ],
   targets: [
-    .target(name: "fd", dependencies: [], path: "Sources"),
-    .testTarget(name: "fdTests", dependencies: ["fd", "Spectre"], path: "Tests/fdTests")
+    .target(name: "UnixSockets", dependencies: []),
+    .testTarget(name: "UnixSocketsTests", dependencies: ["UnixSockets", "Spectre"])
   ]
 )

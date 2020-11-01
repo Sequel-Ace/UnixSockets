@@ -1,13 +1,10 @@
-# fd Changelog
+# UnixSockets Changelog
 
-## 0.3.0
+## 0.4.0
+
+- Renamed to UnixSockets
 
 ### Breaking
 
-- Support for Swift < 4.2 has been removed.
-
-## 0.2.0
-
-### Enhancements
-
-- Adds support for Swift 3.0.
+- TCP functionality has been remove
+- Unix sockets have been significantly reworked

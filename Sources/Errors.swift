@@ -2,7 +2,7 @@ import Foundation
 
 struct UNIXSocketError: Error {
     enum ErrorKind: String {
-        case noSocket, creationError, pathLength, bindError, listenError, acceptError, connectError, unknownError
+        case notSocket, pathLength, creationError, bindError, listenError, acceptError, connectError, unknownError
     }
 
     let kind: ErrorKind

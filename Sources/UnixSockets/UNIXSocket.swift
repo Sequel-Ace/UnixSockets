@@ -99,12 +99,13 @@ public class UNIXSocket: FileDescriptor {
     }
 
     /// Connect to a socket that exists
-    public func connect() throws {
+    public func connect() throws -> UNIXConnection {
         try withUnsafePointer(to: &addr) { pointer in
             try pointer.withMemoryRebound(to: sockaddr.self, capacity: 1) {
                 guard system_connect(fileNumber, $0, UInt32(MemoryLayout<sockaddr_un>.stride)) != -1 else {
                     throw UNIXSocketError(kind: .connectError, errno: errno)
                 }
+                return UNIXConnection(fileNumber: fileNumber)
             }
         }
     }

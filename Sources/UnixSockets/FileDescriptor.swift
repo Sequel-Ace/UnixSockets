@@ -71,9 +71,11 @@ extension ReadableFileDescriptor {
         return Data(bytes: bytes, count: bytes.count)
     }
 
-    public func readAll() throws -> Data {
+    /// readLine reads a line from a fd that is newline (`\n`) terminated
+    public func readLine() throws -> Data {
         var result = Data()
         var data = CChar()
+        var total_read: size_t = 0
         var data_read: size_t = 0
 
         var done = false
@@ -82,11 +84,12 @@ extension ReadableFileDescriptor {
             if data_read <= 0 {
                 break
             }
+            total_read += data_read
             done = Character(UnicodeScalar(UInt8(bitPattern: data))).isNewline
             result.append(contentsOf: [data].map(UInt8.init))
         }
 
-        guard data_read != -1 else {
+        guard total_read > -1 else {
             throw FileDescriptorError(kind: .unknown, errno: errno)
         }
 

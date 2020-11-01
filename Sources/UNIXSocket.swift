@@ -7,28 +7,6 @@ import Darwin
 private let sock_stream = SOCK_STREAM
 #endif
 
-struct UNIXSocketError: Error {
-    enum ErrorKind: String {
-        case noSocket, creationError, pathLength, bindError, listenError, acceptError, connectError, unknownError
-    }
-    
-    let kind: ErrorKind
-    let message: String?
-    
-    var localizedDescription: String {
-        "UNIXSocketError of kind \(kind.rawValue)\(message != nil ? "\nmessage: \(message!)" : "")"
-    }
-    
-    init(kind: ErrorKind, message: String? = nil) {
-        self.kind = kind
-        self.message = message
-    }
-    
-    init(kind: ErrorKind, errno: Int32) {
-        let message = String(utf8String: strerror(errno))
-        self.init(kind: kind, message: message)
-    }
-}
 
 public class UNIXSocket: FileDescriptor {
     public var fileNumber: FileNumber

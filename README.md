@@ -1,7 +1,13 @@
-# fd: File Descriptor
+# UnixSockets: A File Descriptor Library
 
-Swift file descriptor library. fd is a minimal layer on-top of the underlying
-system file descriptor and socket APIs.
+Swift file descriptor library, with a primary focus on supporting file-based sockets. UnixSockets 
+evolved out of a general purpose socket library
+
+## Example
+
+```swift
+
+```
 
 ## Usage
 
